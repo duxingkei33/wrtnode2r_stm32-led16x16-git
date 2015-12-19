@@ -1,0 +1,1 @@
+flash-stm32 root/stm32/rtthread.bin
