@@ -4,7 +4,9 @@
 驱动16X16点阵屏并显示控制汉字,可以用msh命令行来控制显示
 
 源码来自 https://github.com/WRTnode/wrtnode2r_stm32
-编译说明 看https://github.com/WRTnode/wrtnode2r_stm32里面的说明
+编译说明 看
+https://github.com/WRTnode/wrtnode2r_stm32 
+里面的说明
 
 基于开源硬件WRTnode2R 内测版的STM32驱动
 下载本源码可以在XP下用  gcc-arm-none-eabi-4_7-2013q3-20130916-win32.exe  编译通过
