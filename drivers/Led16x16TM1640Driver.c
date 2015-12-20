@@ -1717,7 +1717,7 @@ int   Disp16x16All(void)
 
 #endif
 
-        rt_thread_delay(16);
+        rt_thread_delay(3);
 
 
 
