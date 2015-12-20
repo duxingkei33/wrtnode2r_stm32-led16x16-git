@@ -1,3 +1,9 @@
 git add index.html
+提交所有包括文件夹
+git add -A 
+
+
 git commit -m "电热水器界面"
 git push origin master -u
+
+

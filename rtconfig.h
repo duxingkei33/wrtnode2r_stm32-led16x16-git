@@ -78,7 +78,7 @@
 /* SECTION: finsh, a C-Express shell */
 #define RT_USING_FINSH
 #define FINSH_USING_HISTORY    0
-#define FINSH_THREAD_PRIORITY  6
+#define FINSH_THREAD_PRIORITY 2  //6  改为最高级测试,之前我的线程运行一段时间后finsh就挂了,不再响应
 #define FINSH_USING_SYMTAB
 #define FINSH_USING_DESCRIPTION
 #define FINSH_USING_MSH

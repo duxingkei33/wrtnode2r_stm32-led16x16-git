@@ -83,6 +83,10 @@ extern const stm32_pin_info PIN_MAP[BOARD_NR_GPIO_PINS] =
 #define PIN_TM_SCK3                 1   //PB1   ---D1
 #define PIN_TM_SCK2                 2   //PB2   ---D2
 #define PIN_TM_SCK1                 5   //PB5  ---D5
+//测试运行时间脚脉冲高电平代表一个循环
+#define PIN_TEST                 15   //PA11  ---D15  /* D15/PA11 */
+
+
 #endif
 
 #if 0
@@ -108,6 +112,10 @@ void Led16x16PortInit()
     pinMode((uint8_t)PIN_TM_SCK3, (int)0);
     pinMode((uint8_t)PIN_TM_SCK4, (int)0);
     pinMode((uint8_t)PIN_TM_DIN, (int)0);//OUTPUT
+#ifdef PIN_TEST
+    pinMode((uint8_t)PIN_TEST, (int)0);//OUTPUT
+#endif
+	
 }
 
 
@@ -1659,7 +1667,7 @@ MSH_CMD_EXPORT_ALIAS(cmd_disp16x16, d, disp16x16DotPanel.);
 
 
 
-
+#if 1
 
 int   Disp16x16All(void)
 {
@@ -1672,17 +1680,22 @@ int   Disp16x16All(void)
     while(1)
     {
 
-#if 1
         //控制显存上的点
 #if 0
         DispAllheng();
 #else
+
+#ifdef PIN_TEST
+        digitalWrite(PIN_TEST, 1);
+
+#endif
+
+
         if(LedDispSwitch)
         {
             DispAllshu();
 
         }
-        rt_thread_delay(16);
         //  DispAllshu1();
 #endif
 
@@ -1699,34 +1712,62 @@ int   Disp16x16All(void)
             TM1640DisplayProcess3();
             TM1640DisplayProcess4();
         }
-
-
+#ifdef PIN_TEST
+        digitalWrite(PIN_TEST, 0);
 
 #endif
 
-#if 0
-        digitalWrite(PIN_TM_DIN, 1);
-        digitalWrite(PIN_TM_SCK1, 1);
-        digitalWrite(PIN_TM_SCK2, 1);
-        digitalWrite(PIN_TM_SCK3, 1);
-        digitalWrite(PIN_TM_SCK4, 1);
-        rt_kprintf("PIN_TM_SCK1 =1 cnt =%d\r\n" , cnt);
+        rt_thread_delay(16);
 
-        rt_thread_delay(1*50);
-        digitalWrite(PIN_TM_DIN, 0);
-        digitalWrite(PIN_TM_SCK1, 0);
-        digitalWrite(PIN_TM_SCK2, 0);
-        digitalWrite(PIN_TM_SCK3, 0);
-        digitalWrite(PIN_TM_SCK4, 0);
-        rt_kprintf("PIN_TM_SCK1 =0 cnt =%d\r\n" , cnt);
 
-        rt_thread_delay(1*50);
-#endif
+
 
     }
 }
 
 
+
+
+#else
+
+int   Disp16x16All(void)
+{
+
+    Led16x16PortInit();
+    rt_kprintf("cmd_disp16x16 starting   \r\n" );
+
+
+//   while(cnt--)//
+    while(1)
+    {
+
+        //控制显存上的点
+#if 0
+        DispAllheng();
+#else
+
+#ifdef PIN_TEST
+        digitalWrite(PIN_TEST, 1);
+
+#endif
+        rt_thread_delay(16);  //最小单位10ms
+
+#ifdef PIN_TEST
+        digitalWrite(PIN_TEST, 0);
+
+#endif
+
+        rt_thread_delay(16);
+
+
+#endif
+
+
+    }
+}
+
+
+#endif
 
 
 

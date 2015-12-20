@@ -58,28 +58,48 @@ void rt_init_thread_entry(void* parameter)
 
 extern int   Disp16x16All(void);
 
-
+#if 0
 ALIGN(RT_ALIGN_SIZE)
 static rt_uint8_t disp_stack[ 2048 ]; //512
 
 static struct rt_thread disp_thread;
 
+
+#endif
+
+
+//#世界运行线程后发现 
+//ps 命令列出
+/*
+thread  pri  status      sp     stack size max used   left tick  error
+-------- ---- ------- --------- ---------- ---------- ---------- ---
+tshell   0x06 ready   0x00000098 0x00000800 0x00000150 0x0000000a 000
+tidle    0x07 ready   0x00000048 0x00000100 0x00000060 0x00000019 000
+display  0x02 suspend 0x00000070 0x00000800 0x00000070 0x00000014 000
+*/
+
+//#定义线程优先级
+#define RT_THREAD_PRIORITY_DISP        6  //RT_THREAD_PRIORITY_MAX/3
+#define RT_THREAD_STACK_DISP  (512)  //实际才用到0x00000070
+#define RT_THREAD_TICK		20 //   5 //
+
+
+
 static void disp_thread_entry(void* parameter)
 {
-    unsigned int count=0;
     //      rt_thread_delay(5* RT_TICK_PER_SECOND/2 );
         rt_kprintf("disp_thread_entry(&disp_thread);\r\n");
 
-    while (1)
-    {
 #if 1
         Disp16x16All();
 #else
+    while (1)
+    {
         rt_thread_delay(5* RT_TICK_PER_SECOND/2 );
         rt_kprintf("disp_thread_entry(&disp_thread);\r\n");
-#endif
 
     }
+#endif
 }
 
 
@@ -113,7 +133,7 @@ int rt_application_init(void)
 
     tid = rt_thread_create("display",
                            disp_thread_entry, RT_NULL,
-                           2048, RT_THREAD_PRIORITY_MAX/3, 20);
+                           RT_THREAD_STACK_DISP, RT_THREAD_PRIORITY_DISP, RT_THREAD_TICK);
     if (tid != RT_NULL) rt_thread_startup(tid);
 
 
